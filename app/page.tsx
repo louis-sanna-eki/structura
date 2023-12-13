@@ -2,6 +2,7 @@
  * v0 by Vercel.
  * @see https://v0.dev/t/CPe8fm0Tmp9
  */
+"use client";
 import { CardHeader, CardContent, Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Label } from "@/components/ui/label";
@@ -16,36 +17,46 @@ import {
 
 export default function Home() {
   return (
-    <div>
-      <nav className="rounded-md p-4 mb-6 flex items-center justify-around bg-white shadow-md">
-        <ul className="space-x-8 flex">
-          <li>
-            <a className="text-gray-900 hover:text-gray-600" href="#">
-              Bronze
-              <ArrowRightIcon className="w-4 h-4 ml-2 inline-block" />
-            </a>
-          </li>
-          <li>
-            <a className="text-gray-900 hover:text-gray-600" href="#">
-              Silver
-              <ArrowRightIcon className="w-4 h-4 ml-2 inline-block" />
-            </a>
-          </li>
-          <li>
-            <a className="text-gray-900 hover:text-gray-600" href="#">
-              Gold
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <Silver/>
-    </div>
+      <div>
+        <nav className="p-4 mb-6 flex items-center justify-around bg-white shadow-md">
+          <ul className="space-x-8 flex">
+            <li>
+              <a className="text-gray-900 hover:text-gray-600" href="#">
+                Bronze
+                <ArrowRightIcon className="w-4 h-4 ml-2 inline-block" />
+              </a>
+            </li>
+            <li>
+              <a className="text-gray-900 hover:text-gray-600" href="#">
+                Silver
+                <ArrowRightIcon className="w-4 h-4 ml-2 inline-block" />
+              </a>
+            </li>
+            <li>
+              <a className="text-gray-900 hover:text-gray-600" href="#">
+                Gold
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <Card></Card>
+        <Silver />
+      </div>
   );
 }
 
+
 function Silver() {
   return (
-    <div className="p-6">
+    <div className="px-6 pb-6">
+      <div className="flex justify-between mb-4">
+        <button className="px-3 py-2 bg-blue-500 text-white rounded-md">
+          Previous
+        </button>
+        <button className="px-3 py-2 bg-blue-500 text-white rounded-md">
+          Next
+        </button>
+      </div>
       <Card>
         <CardHeader>
           <h2 className="text-xl font-semibold">Raw Text and Interpretation</h2>
@@ -100,7 +111,7 @@ function Silver() {
                 </TableRow>
               </TableBody>
             </Table>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-gray-500">
               This is the interpreted text from the raw text.
             </p>
           </div>
