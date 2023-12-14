@@ -17,8 +17,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { type ThemeProviderProps } from "next-themes/dist/types";
+import { useState } from "react";
 
 export default function Home() {
+  "use client";
   return (
     <div>
       <NavBar />
@@ -68,12 +70,14 @@ function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }
 
+const tableData = [
+  { value: "Value 1", class: "Assets", validation: false },
+  { value: "Value 2", class: "Assets", validation: false },
+  // ... add more rows as needed
+];
+
 function KPITable() {
-  const tableData = [
-    { value: "Value 1", class: "Assets", validation: true },
-    { value: "Value 2", class: "Assets", validation: true },
-    // ... add more rows as needed
-  ];
+  const [rows, setRows] = useState(tableData);
 
   return (
     <Table>
@@ -86,7 +90,7 @@ function KPITable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {tableData.map((row, index) => (
+        {rows.map((row, index) => (
           <TableRow key={index}>
             <TableCell>{row.value}</TableCell>
             <TableCell>{row.class}</TableCell>
@@ -94,7 +98,19 @@ function KPITable() {
               {row.validation && <CheckIcon className="w-4 h-4" />}
             </TableCell>
             <TableCell>
-              <button className="px-2 py-1 bg-green-500 text-white rounded-md">
+              <button
+                className="px-2 py-1 bg-green-500 text-white rounded-md"
+                onClick={() => {
+                  console.log("Button clicked");
+                  setRows((prevRows) =>
+                    prevRows.map((row, idx) =>
+                      idx === index
+                        ? { ...row, validation: !row.validation }
+                        : row
+                    )
+                  );
+                }}
+              >
                 Validate
               </button>
             </TableCell>
