@@ -50,7 +50,7 @@ function Silver() {
       <div className="p-6">
         <Card>
           <CardHeader>
-            <h2 className="text-xl font-semibold">Transform Raw Text</h2>
+            <h2 className="text-xl font-semibold">Interpret Raw Text</h2>
           </CardHeader>
           <CardContent className="p-4 pt-2">
             <div className="bg-white shadow rounded-lg p-4">
@@ -64,7 +64,7 @@ function Silver() {
                 className="mt-4 px-4 py-2 w-full rounded-md text-white bg-gray-900 hover:bg-black"
                 onClick={() => complete(content)}
               >
-                Convert Text
+                Transform Text
               </Button>
             </div>
             <div className="grid w-full gap-1.5 mt-4">
