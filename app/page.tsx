@@ -19,6 +19,7 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { type ThemeProviderProps } from "next-themes/dist/types";
 import { useCallback, useState } from "react";
 import { useCompletion } from "ai/react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Home() {
   "use client";
@@ -30,10 +31,11 @@ export default function Home() {
   );
 }
 
-const EXAMPLE_TEXT = "As a result of adoption , the Company recognized approximately $ 279.9 million of operating ROU assets and approximately $ 333.5 million of operating lease liabilities as of January 1 , 2019 . NOTE 3 - ACQUISITIONS AND DISPOSITIONS Empire City Acquisition As discussed in Note 1 , on January 29 , 2019 , the Company acquired the developed real property associated with Empire City from MGM for fair value consideration of approximately $ 634.4 million .";
+const EXAMPLE_TEXT =
+  "As a result of adoption , the Company recognized approximately $ 279.9 million of operating ROU assets and approximately $ 333.5 million of operating lease liabilities as of January 1 , 2019 . NOTE 3 - ACQUISITIONS AND DISPOSITIONS Empire City Acquisition As discussed in Note 1 , on January 29 , 2019 , the Company acquired the developed real property associated with Empire City from MGM for fair value consideration of approximately $ 634.4 million .";
 
 function Silver() {
-  const { complete, completion } = useCompletion({
+  const { complete, completion, isLoading } = useCompletion({
     api: "/api/completion",
   });
   const [content, setContent] = useState(EXAMPLE_TEXT);
@@ -67,7 +69,7 @@ function Silver() {
             </div>
             <div className="grid w-full gap-1.5 mt-4">
               <Label htmlFor="interpretation">Interpretation</Label>
-              <KPITable kpis={kpis} />
+              <KPITable kpis={kpis} isLoading={isLoading} />
               <p className="text-sm text-gray-500">
                 This is the interpreted KPIs from the raw text.
               </p>
@@ -107,8 +109,10 @@ const defaultArray: never[] = [];
 
 function KPITable({
   kpis,
+  isLoading
 }: {
   kpis: { value: string; className: string; validation: boolean }[];
+  isLoading: boolean
 }) {
   return (
     <Table>
@@ -124,8 +128,28 @@ function KPITable({
         {kpis.map((row, index) => (
           <Row value={row.value} className={row.className} key={index} />
         ))}
+        {isLoading ? <LoadingRow/> : null}
       </TableBody>
     </Table>
+  );
+}
+
+function LoadingRow() {
+  return (
+    <TableRow>
+      <TableCell>
+      <Skeleton className="h-12" />
+      </TableCell>
+      <TableCell>
+      <Skeleton className="h-12" />
+      </TableCell>
+      <TableCell>
+      <Skeleton className="h-12" />
+      </TableCell>
+      <TableCell>
+      <Skeleton className="h-12" />
+      </TableCell>
+    </TableRow>
   );
 }
 
