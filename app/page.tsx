@@ -4,7 +4,7 @@
  */
 "use client";
 import { CardHeader, CardContent, Card } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import {
   TableHead,
@@ -14,6 +14,7 @@ import {
   TableBody,
   Table,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -29,17 +30,15 @@ function Silver() {
     <div className="p-6">
       <Card>
         <CardHeader>
-          <h2 className="text-xl font-semibold">Raw Text and Interpretation</h2>
+          <h2 className="text-xl font-semibold">Interpretate Raw Text</h2>
         </CardHeader>
-        <CardContent className="p-4">
-          <ScrollArea className="h-72 w-full max-w-sm rounded-md border">
-            <div className="p-4 text-sm">
-              <h3 className="mb-4 text-lg font-medium leading-none">
-                Raw Text
-              </h3>
-              <p className="mt-4 leading-7">Here goes the raw text</p>
-            </div>
-          </ScrollArea>
+        <CardContent className="p-4 pt-2">
+          <div className="bg-white shadow rounded-lg p-4">
+            <Textarea className="h-72 w-full max-w rounded-md border text-white"></Textarea>
+            <Button className="mt-4 px-4 py-2 w-full rounded-md text-white bg-gray-600 hover:bg-gray-700">
+              Convert Text
+            </Button>
+          </div>
           <div className="grid w-full gap-1.5 mt-4">
             <Label htmlFor="interpretation">Interpretation</Label>
             <KPITable />
