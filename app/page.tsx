@@ -17,46 +17,16 @@ import {
 
 export default function Home() {
   return (
-      <div>
-        <nav className="p-4 mb-6 flex items-center justify-around bg-white shadow-md">
-          <ul className="space-x-8 flex">
-            <li>
-              <a className="text-gray-900 hover:text-gray-600" href="#">
-                Bronze
-                <ArrowRightIcon className="w-4 h-4 ml-2 inline-block" />
-              </a>
-            </li>
-            <li>
-              <a className="text-gray-900 hover:text-gray-600" href="#">
-                Silver
-                <ArrowRightIcon className="w-4 h-4 ml-2 inline-block" />
-              </a>
-            </li>
-            <li>
-              <a className="text-gray-900 hover:text-gray-600" href="#">
-                Gold
-              </a>
-            </li>
-          </ul>
-        </nav>
-        <Card></Card>
-        <Silver />
-      </div>
+    <div>
+      <NavBar />
+      <Silver />
+    </div>
   );
 }
 
-
 function Silver() {
   return (
-    <div className="px-6 pb-6">
-      <div className="flex justify-between mb-4">
-        <button className="px-3 py-2 bg-blue-500 text-white rounded-md">
-          Previous
-        </button>
-        <button className="px-3 py-2 bg-blue-500 text-white rounded-md">
-          Next
-        </button>
-      </div>
+    <div className="p-6">
       <Card>
         <CardHeader>
           <h2 className="text-xl font-semibold">Raw Text and Interpretation</h2>
@@ -72,45 +42,7 @@ function Silver() {
           </ScrollArea>
           <div className="grid w-full gap-1.5 mt-4">
             <Label htmlFor="interpretation">Interpretation</Label>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>KPI</TableHead>
-                  <TableHead>Class</TableHead>
-                  <TableHead>Value</TableHead>
-                  <TableHead>Validation</TableHead>
-                  <TableHead>Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableCell>KPI 1</TableCell>
-                  <TableCell>Assets</TableCell>
-                  <TableCell>Value 1</TableCell>
-                  <TableCell>
-                    <CheckIcon className="w-4 h-4" />
-                  </TableCell>
-                  <TableCell>
-                    <button className="px-2 py-1 bg-blue-500 text-white rounded-md">
-                      Fix Value
-                    </button>
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>KPI 2</TableCell>
-                  <TableCell>Assets</TableCell>
-                  <TableCell>Value 2</TableCell>
-                  <TableCell>
-                    <CheckIcon className="w-4 h-4" />
-                  </TableCell>
-                  <TableCell>
-                    <button className="px-2 py-1 bg-blue-500 text-white rounded-md">
-                      Fix Value
-                    </button>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
+            <KPITable />
             <p className="text-sm text-gray-500">
               This is the interpreted text from the raw text.
             </p>
@@ -121,23 +53,52 @@ function Silver() {
   );
 }
 
-function ArrowRightIcon(props: any) {
+function KPITable() {
+  const tableData = [
+    { value: "Value 1", class: "Assets", validation: true },
+    { value: "Value 2", class: "Assets", validation: true },
+    // ... add more rows as needed
+  ];
+
   return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 12h14" />
-      <path d="m12 5 7 7-7 7" />
-    </svg>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Value</TableHead>
+          <TableHead>Class</TableHead>
+          <TableHead>Validation</TableHead>
+          <TableHead>Action</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {tableData.map((row, index) => (
+          <TableRow key={index}>
+            <TableCell>{row.value}</TableCell>
+            <TableCell>{row.class}</TableCell>
+            <TableCell>
+              {row.validation && <CheckIcon className="w-4 h-4" />}
+            </TableCell>
+            <TableCell>
+              <button className="px-2 py-1 bg-green-500 text-white rounded-md">
+                Validate
+              </button>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+}
+
+function NavBar() {
+  return (
+    <header className="flex h-20 w-full shrink-0 items-center px-4 md:px-6 bg-white shadow-md">
+      <div className="flex w-full justify-center">
+        <h1 className="text-2xl font-semibold">
+          Structura: Where Text Transforms into Treasure
+        </h1>
+      </div>
+    </header>
   );
 }
 
