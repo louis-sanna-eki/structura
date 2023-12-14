@@ -15,6 +15,8 @@ import {
   Table,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { type ThemeProviderProps } from "next-themes/dist/types";
 
 export default function Home() {
   return (
@@ -27,29 +29,43 @@ export default function Home() {
 
 function Silver() {
   return (
-    <div className="p-6">
-      <Card>
-        <CardHeader>
-          <h2 className="text-xl font-semibold">Interpretate Raw Text</h2>
-        </CardHeader>
-        <CardContent className="p-4 pt-2">
-          <div className="bg-white shadow rounded-lg p-4">
-            <Textarea className="h-72 w-full max-w rounded-md border text-white"></Textarea>
-            <Button className="mt-4 px-4 py-2 w-full rounded-md text-white bg-gray-600 hover:bg-gray-700">
-              Convert Text
-            </Button>
-          </div>
-          <div className="grid w-full gap-1.5 mt-4">
-            <Label htmlFor="interpretation">Interpretation</Label>
-            <KPITable />
-            <p className="text-sm text-gray-500">
-              This is the interpreted text from the raw text.
-            </p>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="light"
+      enableSystem={false}
+      disableTransitionOnChange
+    >
+      <div className="p-6">
+        <Card>
+          <CardHeader>
+            <h2 className="text-xl font-semibold">Interpretate Raw Text</h2>
+          </CardHeader>
+          <CardContent className="p-4 pt-2">
+            <div className="bg-white shadow rounded-lg p-4">
+              <Textarea
+                className="h-72 w-full max-w rounded-md border dark:text-white"
+                placeholder="Your text here!"
+              ></Textarea>
+              <Button className="mt-4 px-4 py-2 w-full rounded-md text-white bg-gray-900 hover:bg-black">
+                Convert Text
+              </Button>
+            </div>
+            <div className="grid w-full gap-1.5 mt-4">
+              <Label htmlFor="interpretation">Interpretation</Label>
+              <KPITable />
+              <p className="text-sm text-gray-500">
+                This is the interpreted text from the raw text.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </ThemeProvider>
   );
+}
+
+function ThemeProvider({ children, ...props }: ThemeProviderProps) {
+  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }
 
 function KPITable() {
