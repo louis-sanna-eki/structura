@@ -85,8 +85,8 @@ function KPITable() {
         <TableRow>
           <TableHead>Value</TableHead>
           <TableHead>Class</TableHead>
-          <TableHead>Validation</TableHead>
-          <TableHead>Action</TableHead>
+          <TableHead className="w-[250px]">Validation</TableHead>
+          <TableHead className="w-[250px]">Action</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -99,7 +99,9 @@ function KPITable() {
             </TableCell>
             <TableCell>
               <button
-                className="px-2 py-1 bg-green-500 text-white rounded-md"
+                className={`px-2 py-1 text-white rounded-md w-24 ${
+                  row.validation ? "bg-red-500" : "bg-green-500"
+                }`}
                 onClick={() => {
                   console.log("Button clicked");
                   setRows((prevRows) =>
@@ -111,7 +113,7 @@ function KPITable() {
                   );
                 }}
               >
-                Validate
+                {row.validation ? "Report" : "Validate"}
               </button>
             </TableCell>
           </TableRow>
