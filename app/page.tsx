@@ -38,7 +38,7 @@ function Silver() {
       <div className="p-6">
         <Card>
           <CardHeader>
-            <h2 className="text-xl font-semibold">Interpretate Raw Text</h2>
+            <h2 className="text-xl font-semibold">Transform Raw Text</h2>
           </CardHeader>
           <CardContent className="p-4 pt-2">
             <div className="bg-white shadow rounded-lg p-4">
@@ -54,7 +54,7 @@ function Silver() {
               <Label htmlFor="interpretation">Interpretation</Label>
               <KPITable />
               <p className="text-sm text-gray-500">
-                This is the interpreted text from the raw text.
+                This is the interpreted KPIs from the raw text.
               </p>
             </div>
           </CardContent>
