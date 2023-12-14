@@ -30,11 +30,13 @@ export default function Home() {
   );
 }
 
+const EXAMPLE_TEXT = "As a result of adoption , the Company recognized approximately $ 279.9 million of operating ROU assets and approximately $ 333.5 million of operating lease liabilities as of January 1 , 2019 . NOTE 3 - ACQUISITIONS AND DISPOSITIONS Empire City Acquisition As discussed in Note 1 , on January 29 , 2019 , the Company acquired the developed real property associated with Empire City from MGM for fair value consideration of approximately $ 634.4 million .";
+
 function Silver() {
   const { complete, completion } = useCompletion({
     api: "/api/completion",
   });
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(EXAMPLE_TEXT);
   const kpis = parseCompletion(completion);
   return (
     <ThemeProvider
