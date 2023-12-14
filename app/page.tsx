@@ -17,7 +17,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { type ThemeProviderProps } from "next-themes/dist/types";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { useCompletion } from "ai/react";
 
 export default function Home() {
   "use client";
@@ -30,6 +31,11 @@ export default function Home() {
 }
 
 function Silver() {
+  const { complete, completion } = useCompletion({
+    api: "/api/completion",
+  });
+  const [content, setContent] = useState("");
+  const kpis = parseCompletion(completion);
   return (
     <ThemeProvider
       attribute="class"
@@ -47,14 +53,19 @@ function Silver() {
               <Textarea
                 className="h-72 w-full max-w rounded-md border dark:text-white"
                 placeholder="Your text here!"
+                onChange={(e) => setContent(e.target.value)}
+                value={content}
               ></Textarea>
-              <Button className="mt-4 px-4 py-2 w-full rounded-md text-white bg-gray-900 hover:bg-black">
+              <Button
+                className="mt-4 px-4 py-2 w-full rounded-md text-white bg-gray-900 hover:bg-black"
+                onClick={() => complete(content)}
+              >
                 Convert Text
               </Button>
             </div>
             <div className="grid w-full gap-1.5 mt-4">
               <Label htmlFor="interpretation">Interpretation</Label>
-              <KPITable />
+              <KPITable kpis={kpis} />
               <p className="text-sm text-gray-500">
                 This is the interpreted KPIs from the raw text.
               </p>
@@ -66,19 +77,37 @@ function Silver() {
   );
 }
 
+function parseCompletion(
+  completionStr: string
+): { value: string; className: string; validation: boolean }[] {
+  const completionPairs = completionStr
+    .trim()
+    .split("\n")
+    .map((line: any) => line.split("=>"));
+  const kpis = completionPairs.reduce((acc: any, pair: any) => {
+    if (pair.length === 2 && pair[0].trim() !== "0.0") {
+      acc.push({
+        value: pair[0].trim(),
+        className: pair[1].trim(),
+        validation: false,
+      });
+    }
+    return acc;
+  }, []);
+  return kpis;
+}
+
 function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }
 
-const tableData = [
-  { value: "Value 1", class: "Assets", validation: false },
-  { value: "Value 2", class: "Assets", validation: false },
-  // ... add more rows as needed
-];
+const defaultArray: never[] = [];
 
-function KPITable() {
-  const [rows, setRows] = useState(tableData);
-
+function KPITable({
+  kpis,
+}: {
+  kpis: { value: string; className: string; validation: boolean }[];
+}) {
   return (
     <Table>
       <TableHeader>
@@ -90,36 +119,34 @@ function KPITable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {rows.map((row, index) => (
-          <TableRow key={index}>
-            <TableCell>{row.value}</TableCell>
-            <TableCell>{row.class}</TableCell>
-            <TableCell>
-              {row.validation && <CheckIcon className="w-4 h-4" />}
-            </TableCell>
-            <TableCell>
-              <button
-                className={`px-2 py-1 text-white rounded-md w-24 ${
-                  row.validation ? "bg-red-500" : "bg-green-500"
-                }`}
-                onClick={() => {
-                  console.log("Button clicked");
-                  setRows((prevRows) =>
-                    prevRows.map((row, idx) =>
-                      idx === index
-                        ? { ...row, validation: !row.validation }
-                        : row
-                    )
-                  );
-                }}
-              >
-                {row.validation ? "Report" : "Validate"}
-              </button>
-            </TableCell>
-          </TableRow>
+        {kpis.map((row, index) => (
+          <Row value={row.value} className={row.className} key={index} />
         ))}
       </TableBody>
     </Table>
+  );
+}
+
+function Row({ value, className }: { value: string; className: string }) {
+  const [isValid, setIsValid] = useState(false);
+  return (
+    <TableRow>
+      <TableCell>{value}</TableCell>
+      <TableCell>{className}</TableCell>
+      <TableCell>{isValid && <CheckIcon className="w-4 h-4" />}</TableCell>
+      <TableCell>
+        <button
+          className={`px-2 py-1 text-white rounded-md w-24 ${
+            isValid ? "bg-red-500" : "bg-green-500"
+          }`}
+          onClick={() => {
+            setIsValid((prev) => !prev);
+          }}
+        >
+          {isValid ? "Report" : "Validate"}
+        </button>
+      </TableCell>
+    </TableRow>
   );
 }
 
